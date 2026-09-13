@@ -1,5 +1,0 @@
-services:
-  - type: web
-    name: routewise-delivery-planner
-    runtime: docker
-    autoDeploy: true
