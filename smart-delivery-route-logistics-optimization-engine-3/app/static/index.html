@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101b3d" />
+    <title>Routewise | Delivery route planner</title>
+    <link rel="stylesheet" href="/assets/leaflet.css?v=2" />
+    <link rel="stylesheet" href="/assets/styles.css?v=8" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Routewise home">
+        <span class="brand-mark"><i></i><i></i><i></i></span>
+        <span>route<span>wise</span></span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#planner">Plan a route</a>
+        <a href="#traffic">Traffic desk</a>
+        <a href="/instructions">Instructions</a>
+      </nav>
+      <a class="docs-link" href="/docs" target="_blank" rel="noreferrer">API docs <span>↗</span></a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="status-dot"></span> BENGALURU DELIVERY ROUTE PLANNER</p>
+          <h1>Find a practical<br /><em>delivery route.</em></h1>
+          <p class="hero-text">Select a source and destination, then compare how traffic or a road closure changes the route.</p>
+          <div class="hero-actions">
+            <a href="#planner" class="primary-button">Plan a delivery <span>→</span></a>
+            <a href="/instructions" class="text-button">View instructions <span>→</span></a>
+          </div>
+          <div class="trust-row">
+            <div><strong id="intersection-count">5</strong><span>intersections</span></div>
+            <div><strong id="road-count">6</strong><span>roads tracked</span></div>
+            <div><strong>3</strong><span>traffic actions</span></div>
+          </div>
+        </div>
+        <div class="map-column reveal">
+          <div class="hero-map">
+            <div class="city-chip"><span></span> BENGALURU, INDIA</div>
+            <div id="bangalore-map" role="img" aria-label="Map of Bengaluru showing the selected delivery route"></div>
+          </div>
+          <div class="map-card"><span class="tiny-pin">●</span><div><small>MAP STATUS</small><strong id="map-status">Loading route…</strong></div><span class="check">✓</span></div>
+        </div>
+      </section>
+
+      <section class="workspace" id="planner">
+        <div class="section-heading">
+          <div><p class="eyebrow">ROUTE PLANNER</p><h2>Choose the delivery stops.</h2></div>
+          <p>The planner uses the current road conditions shown below.</p>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel planner-panel">
+            <div class="panel-top"><div><span class="step-pill">01</span><h3>Delivery locations</h3></div></div>
+            <form id="route-form">
+              <div class="field-row">
+                <label>Starting point<select id="source" aria-label="Starting point"></select></label>
+                <button class="swap-button" type="button" id="swap-points" aria-label="Swap start and destination">⇄</button>
+                <label>Drop-off point<select id="destination" aria-label="Drop-off point"></select></label>
+              </div>
+              <button class="primary-button wide" type="submit">Find the best route <span>→</span></button>
+            </form>
+            <p class="microcopy">Try Yeshwanthpur Hub to Indiranagar first, then test a traffic change.</p>
+          </article>
+
+          <article class="panel result-panel" aria-live="polite">
+            <div class="panel-top"><div><span class="step-pill route-step">02</span><h3>Suggested route</h3></div><span id="route-state" class="route-state"><i></i> Ready</span></div>
+            <div id="empty-result" class="empty-result"><div class="route-orb">⌁</div><p>Select two locations to see the route here and on the map.</p></div>
+            <div id="route-result" class="route-result hidden">
+              <div class="cost-card"><div><span>ROUTE COST</span><strong id="total-cost">—</strong></div><div class="cost-icon">⌁</div></div>
+              <div><span class="route-caption">THE DELIVERY PATH</span><div id="route-stops" class="route-stops"></div></div>
+              <details><summary>See the route check <span>⌄</span></summary><p id="traversal-copy"></p></details>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="traffic-section" id="traffic">
+        <div class="traffic-copy">
+          <p class="eyebrow"><span class="orange-dot"></span> ROAD CONDITIONS</p>
+          <h2>Test a traffic change.</h2>
+          <p>Mark one road as busy or closed, then run the route again to compare the result.</p>
+          <div class="traffic-note"><span>•</span><p><strong>Need a clean start?</strong> Use Reset all roads to restore the original sample network.</p></div>
+        </div>
+        <article class="traffic-card">
+          <div class="panel-top"><div><span class="step-pill traffic-step">03</span><h3>Road update</h3></div></div>
+          <form id="traffic-form">
+            <label>Choose a road<select id="traffic-road" aria-label="Road to update"></select></label>
+            <label>What happened?<select id="traffic-action" aria-label="Traffic condition"><option value="slow_down">Heavy traffic</option><option value="block">Road closed</option><option value="restore">Restore normal</option></select></label>
+            <label id="multiplier-field">Traffic intensity<select id="multiplier" aria-label="Traffic intensity"><option value="1.5">A little slower · 1.5×</option><option value="2" selected>Busy · 2×</option><option value="3">Very busy · 3×</option></select></label>
+            <button class="dark-button wide" type="submit">Apply road update <span>→</span></button>
+          </form>
+          <div class="traffic-footer"><p id="traffic-message" class="traffic-message">No traffic changes right now.</p><button id="reset-roads" type="button" class="reset-button">Reset all roads</button></div>
+        </article>
+      </section>
+
+      <section class="help-section">
+        <div><p class="eyebrow">NEED HELP?</p><h2>Read the quick instructions.</h2><p>See how to plan a route, read the map, and reset the road conditions.</p></div>
+        <a href="/instructions" class="primary-button">Read instructions <span>→</span></a>
+      </section>
+    </main>
+
+    <footer><a class="brand" href="#top"><span class="brand-mark"><i></i><i></i><i></i></span><span>route<span>wise</span></span></a><p>Bengaluru delivery-route project.</p><a href="#top">Back to top ↑</a></footer>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="/assets/app.js?v=7"></script>
+  </body>
+</html>
